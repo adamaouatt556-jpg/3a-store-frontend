@@ -1,11 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
+    baseURL: 'http://49.13.19.89/api',
 })
 
 // Ajouter le token automatiquement à chaque requête
