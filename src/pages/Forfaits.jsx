@@ -78,8 +78,30 @@ export default function Forfaits() {
                 <div className="bg-green-500/10 border border-green-500/30 text-green-400 text-sm rounded-lg px-4 py-3 mb-6">
                     {message}
                 </div>
+                        )}
+            {/* Instructions de paiement */}
+            {user?.role !== 'super_admin' && (
+                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-5 mb-6">
+                    <h3 className="text-yellow-400 font-medium text-sm mb-3">
+                        💳 Comment payer votre forfait ?
+                    </h3>
+                    <div className="flex flex-col gap-2 text-sm text-gray-300">
+                        <p>1. Choisissez votre forfait et cliquez sur <span className="text-purple-400 font-medium">Souscrire</span></p>
+                        <p>2. Effectuez le paiement via <span className="text-yellow-400 font-medium">Wave</span> au numéro :</p>
+                        <div className="flex items-center gap-3 bg-gray-900 rounded-lg px-4 py-3 mt-1">
+                            <span className="text-2xl">📱</span>
+                            <div>
+                                <p className="text-white font-bold text-lg tracking-widest">+225 05 55 66 02 96</p>
+                                <p className="text-gray-400 text-xs">OUATTARA ALIDOU ADAMA — Wave Côte d'Ivoire</p>
+                            </div>
+                        </div>
+                        <p className="text-gray-400 text-xs mt-2">
+                            ⚠️ Après le paiement, votre abonnement sera activé dans les 24h par l'administrateur.
+                            Envoyez une capture de votre paiement à <span className="text-purple-400">admin@3astore.com</span>
+                        </p>
+                    </div>
+                </div>
             )}
-
             {/* Grille forfaits */}
             {loading ? (
                 <p className="text-gray-500 text-sm">Chargement...</p>

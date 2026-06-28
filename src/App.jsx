@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import ChangePassword from './pages/ChangePassword'
 import Dashboard from './pages/Dashboard'
 import Boutiques from './pages/Boutiques'
 import Categories from './pages/Categories'
@@ -19,19 +20,27 @@ import Inventaire from './pages/Inventaire'
 // Route protégée
 function PrivateRoute({ children }) {
     const { user, loading } = useAuth()
+
     if (loading) return (
         <div className="min-h-screen bg-gray-950 flex items-center justify-center">
             <p className="text-white">Chargement...</p>
         </div>
     )
-    return user ? children : <Navigate to="/login" />
+
+    if (!user) return <Navigate to="/login" />
+
+    // Rediriger vers changement de mot de passe si nécessaire
+    if (user.must_change_password) return <Navigate to="/change-password" />
+
+    return children
 }
 
 export default function App() {
     return (
         <Routes>
-            <Route path="/login"    element={<Login />}    />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login"           element={<Login />}          />
+            <Route path="/register"        element={<Register />}       />
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/dashboard" element={
                 <PrivateRoute><Dashboard /></PrivateRoute>
             } />
@@ -65,15 +74,13 @@ export default function App() {
             <Route path="/rapports" element={
                 <PrivateRoute><Rapports /></PrivateRoute>
             } />
-            <Route path="*" element={<Navigate to="/login" />} />
             <Route path="/statistiques" element={
                 <PrivateRoute><Statistiques /></PrivateRoute>
             } />
-
             <Route path="/inventaire" element={
                 <PrivateRoute><Inventaire /></PrivateRoute>
             } />
-
+            <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
     )
 }

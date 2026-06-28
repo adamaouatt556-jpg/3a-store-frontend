@@ -140,6 +140,23 @@ export default function Utilisateurs() {
         }
     }
 
+    async function handleResetPassword(userId) {
+        const tempPassword = prompt('Entrez le mot de passe temporaire pour cet utilisateur (min 6 caractères) :')
+        if (!tempPassword) return
+        if (tempPassword.length < 6) {
+            setMessage('Le mot de passe temporaire doit contenir au moins 6 caractères.')
+            return
+        }
+        try {
+            await api.post(`/users/${userId}/reset-password`, {
+                temp_password: tempPassword
+            })
+            setMessage(`Mot de passe réinitialisé ! L'utilisateur devra le changer à sa prochaine connexion. Mot de passe temporaire : ${tempPassword}`)
+        } catch (err) {
+            setMessage(err.response?.data?.message ?? 'Erreur.')
+        }
+    }
+
     function getRoleBadge(role) {
         switch(role) {
             case 'super_admin' : return 'bg-purple-500/10 text-purple-400'
@@ -392,6 +409,13 @@ export default function Utilisateurs() {
                                                 className="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 px-2 py-1 rounded-lg transition-colors"
                                             >
                                                 ✏️
+                                            </button>
+                                            <button
+                                                onClick={() => handleResetPassword(u.id)}
+                                                className="text-xs bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded-lg transition-colors"
+                                                title="Réinitialiser le mot de passe"
+                                            >
+                                                🔑
                                             </button>
                                             <button
                                                 onClick={() => handleDelete(u.id)}

@@ -22,9 +22,15 @@ export function AuthProvider({ children }) {
     async function login(email, password) {
         const { data } = await api.post('/auth/login', { email, password })
         localStorage.setItem('token', data.token)
-        localStorage.setItem('user', JSON.stringify(data.user))
-        setUser(data.user)
-        return data.user
+        
+        // Stocker must_change_password dans l'objet user
+        const userData = {
+            ...data.user,
+            must_change_password: data.must_change_password
+        }
+        localStorage.setItem('user', JSON.stringify(userData))
+        setUser(userData)
+        return userData
     }
 
     // Déconnexion
